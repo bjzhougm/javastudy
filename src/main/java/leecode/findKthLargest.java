@@ -3,6 +3,7 @@ package leecode;
 import java.util.PriorityQueue;
 
 public class findKthLargest {
+
     public int findKthLargestMin(int[] nums, int k) {
         int len = nums.length;
         // 使用一个含有 len 个元素的最小堆，默认是最小堆，可以不写 lambda 表达式：(a, b) -> a - b
@@ -14,5 +15,17 @@ public class findKthLargest {
             minHeap.poll();
         }
         return minHeap.peek();
+    }
+
+    public int findKthLargestMax(int[] nums,int k){
+        int len = nums.length;
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(len,(a, b)-> b - a);
+        for (int i = 0;i <len;i++){
+            maxHeap.add(nums[i]);
+        }
+        for (int i = 0;i<k-1;i++){
+            maxHeap.poll();
+        }
+        return maxHeap.peek();
     }
 }
