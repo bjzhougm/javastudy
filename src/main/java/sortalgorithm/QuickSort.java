@@ -5,7 +5,7 @@ public class QuickSort {
     public static void quickSort(int[] array, int start, int end) {
 
         //计算中间基准位置数据
-        int pivot = array[(start + end) / 2];
+        int pivot = array[start+(end - start) / 2];
 
         //左边界开始，右边界为结束
         int leftIndex = start;
