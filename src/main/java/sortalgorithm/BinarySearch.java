@@ -6,7 +6,7 @@ package sortalgorithm;
  */
 public class BinarySearch {
 
-    public static int search(int array[], int low, int high, int target) {
+    public static int search(int[] array, int low, int high, int target) {
         if (low > high)
             return -1;
         //mid = (low + high) / 2 这种情况下 mid值有溢出
