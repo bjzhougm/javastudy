@@ -197,3 +197,5 @@ select
     max(case ttype when '英语' then tscor else 0 end) '英语'
 from testScore
 group by tname;
+
+select

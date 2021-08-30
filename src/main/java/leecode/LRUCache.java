@@ -1,63 +1,96 @@
 package leecode;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * https://leetcode-cn.com/problems/lru-cache/solution/java-hashmapshuang-xiang-lian-biao-by-da-rdjo/
  */
 
-class LRUCache {
-    class Node {
-        public int key, val;
-        public Node next,prev;
-        public Node(int k, int v) {
-            this.key = k;
-            this.val = v;
-        }}
+public class LRUCache {
 
-    Map<Integer, Node> map = new HashMap<>();
-    int cap = 0;    //容量
-    Node head = null, last = null;  //双向链表头尾指针
+    HashMap<Integer, Node> map;
 
+    DoubleLinkedList cache;
 
-    public LRUCache(int capacity) {     //初始化
-        cap = capacity;
-        head = new Node(-1, -1);
-        last = new Node(-1, -1);
-        head.next = last; head.prev = last;
-        last.next = head; last.prev = head;
+    int cap;
+
+    public LRUCache(int capacity){
+        map   = new HashMap<>();
+        cache = new DoubleLinkedList();
+        cap   = capacity;
     }
 
-    public int get(int key) {
-        Node n;
-        if((n = map.get(key)) == null)  //元素不存在
-            return -1;
-        put(n.key, n.val);  //元素存在，则用put函数将其从链表的原位置删除，移到表头
-        return n.val;       //返回节点的值
+    public void put(int key, int val){
+        Node newNode = new Node(key, val);
 
+        if(map.containsKey(key)){
+            cache.delete(map.get(key));
+        }else{
+            if(map.size() == cap){
+                int k = cache.deleteLast();
+                map.remove(k);
+            }
 
+        }
+        cache.addFirst(newNode);
+        map.put(key, newNode);
     }
 
-    public void put(int key, int value) {
-        Node del;   //指向被删除的元素
-        if(map.get(key)!=null || map.size() >= cap){    //容量已满或者已存在，都应该进行删除
-            del = (map.get(key)!=null ? map.get(key) : last.prev);
+    public int get(int key){
+        if(!map.containsKey(key))   return -1;
 
-            Node p = del.prev;  //从链表中删除该元素
-            del.next.prev = p;
-            p.next = del.next;
+        int val = map.get(key).val;
+        put(key, val);
 
-            map.remove(del.key);    //删除哈希表到该元素的映射
+        return val;
+    }
+
+
+    class Node{
+        public int key;
+        public int val;
+        public Node prev;
+        public Node next;
+
+        public Node(int key, int val){
+            this.key = key;
+            this.val = val;
+        }
+    }
+
+    class DoubleLinkedList{
+        Node head;
+        Node tail;
+
+        public DoubleLinkedList(){
+            head = new Node(0,0);
+            tail = new Node(0,0);
+
+            head.next = tail;
+            tail.prev = head;
         }
 
-        Node n = new Node(key, value);
+        public void addFirst(Node node){
 
-        n.next = head.next;     //插入元素到表头
-        n.prev = head;
-        head.next.prev = n;
-        head.next = n;
+            node.next   = head.next;
+            node.prev   = head;
 
-        map.put(key, n);    //哈希表中新增映射
+            head.next.prev = node;
+            head.next      = node;
+        }
+
+        public int delete(Node n){
+            int key = n.key;
+            n.next.prev = n.prev;
+            n.prev.next = n.next;
+
+            return key;
+        }
+
+        public int deleteLast(){
+            if(head.next == tail)   return -1;
+
+            return delete(tail.prev);
+        }
     }
 }

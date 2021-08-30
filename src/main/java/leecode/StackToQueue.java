@@ -2,59 +2,59 @@ package leecode;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Stack;
 
 /**
  * 双栈实现队列
  * https://leetcode-cn.com/problems/implement-queue-using-stacks/solution/shi-yong-liang-ge-zhan-yi-ge-zhuan-men-ru-dui-yi-g/
  */
 public class StackToQueue {
-    private Deque<Integer> pushStack;
-    private Deque<Integer> popStack;
+    //两个栈，一个出栈，一个入栈
+    private Stack<Integer> inStack;
+    private Stack<Integer> outStack;
 
     /**
      * Initialize your data structure here.
      */
     public StackToQueue() {
-        pushStack = new ArrayDeque<>();
-        popStack = new ArrayDeque<>();
+        inStack = new Stack<>();
+        outStack = new Stack<>();
     }
 
     /**
      * Push element x to the back of queue.
      */
-    public void push(int x) {
+    public void appendTail(int x) {
         // 在任何时候都可以向 pushStack 推入元素
-        pushStack.addLast(x);
+        inStack.push(x);
     }
 
-    /**
-     * Removes the element from in front of queue and returns that element.
-     */
-    public int pop() {
-        // 从 popStack 取出元素
-        if (!popStack.isEmpty()) {
-            return popStack.removeLast();
+
+    public int deleteHead() {
+        // 从 outStack 取出元素
+        if (!outStack.isEmpty()) {
+            return outStack.pop();
         }
-        // 走到这里是因为 popStack 为空，此时需要将 pushStack 里的所有元素依次放入 popStack
-        while (!pushStack.isEmpty()) {
-            popStack.addLast(pushStack.removeLast());
+        // 走到这里是因为 outStack 为空，此时需要将 inStack 里的所有元素依次放入 outStack
+        while (!inStack.isEmpty()) {
+            outStack.push(inStack.pop());
         }
-        return popStack.removeLast();
+        return outStack.isEmpty() ? -1 : outStack.pop();
     }
 
     /**
      * Get the front element.
      */
     public int peek() {
-        // 从 popStack 取出元素
-        if (!popStack.isEmpty()) {
-            return popStack.peekLast();
+        // 从 outStack 取出元素
+        if (!outStack.isEmpty()) {
+            return outStack.peek();
         }
-        // 走到这里是因为 popStack 为空，此时需要将 pushStack 里的所有元素依次放入 popStack
-        while (!pushStack.isEmpty()) {
-            popStack.addLast(pushStack.removeLast());
+        // 走到这里是因为 outStack 为空，此时需要将 inStack 里的所有元素依次放入 outStack
+        while (!inStack.isEmpty()) {
+            outStack.push(inStack.pop());
         }
-        return popStack.peekLast();
+        return  outStack.isEmpty() ? -1 : outStack.peek();
     }
 
     /**
@@ -62,6 +62,6 @@ public class StackToQueue {
      */
     public boolean empty() {
         // 两个栈都为空，才说明队列为空
-        return pushStack.isEmpty() && popStack.isEmpty();
+        return inStack.isEmpty() && outStack.isEmpty();
     }
 }
