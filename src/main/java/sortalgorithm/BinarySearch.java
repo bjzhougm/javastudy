@@ -18,4 +18,9 @@ public class BinarySearch {
             return search(array, mid + 1, high, target);
         return mid;
     }
+
+    public static void main(String[] args) {
+        int[] array = {1, 3, 5, 7, 15, 99, 106, 234, 555, 6343, 9999};
+        System.out.println(search(array,0,array.length,15));
+    }
 }

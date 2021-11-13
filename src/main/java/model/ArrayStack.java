@@ -3,7 +3,7 @@ package model;
 public class ArrayStack {
     static final int CAPACITY = 1000;
     int top;
-    int stack[];
+    int[] stack;
 
     public static void main(String[] args) {
         ArrayStack s = new ArrayStack();
@@ -18,21 +18,18 @@ public class ArrayStack {
         stack = new int[CAPACITY];
     }
 
-    public boolean push(int val) {
+    public void push(int val) {
         if (top >= (CAPACITY - 1)) {
             System.out.println("ArrayStack Overflow.");
-            return false;
+            return;
         }
         stack[++top] = val;
-        return true;
     }
 
     public int pop() {
         if (top < 0) {
-            if (top < 0) {
-                System.out.println("ArrayStack Underflow.");
-                return 0;
-            }
+            System.out.println("ArrayStack Underflow.");
+            return 0;
         }
         int element = stack[top--];
         return element;
