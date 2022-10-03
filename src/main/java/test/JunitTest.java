@@ -8,4 +8,9 @@ public class JunitTest {
     public void test(){
 
     }
+
+    @Test
+    public boolean getValue(){
+        return true;
+    }
 }
