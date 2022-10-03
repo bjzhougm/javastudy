@@ -10,7 +10,6 @@ public class JunitTest {
     }
 
     @Test
-    public boolean getValue(){
-        return true;
+    public void getValue(){
     }
 }
