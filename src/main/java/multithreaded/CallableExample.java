@@ -28,7 +28,7 @@ public class CallableExample {
             //提交callable到线程池
             futures.add(executor.submit(callable));
         }
-        //获取返回值
+        //获取返回值测试
         futures.forEach(f -> {
             try {
                 //未处理完的线程会阻塞
