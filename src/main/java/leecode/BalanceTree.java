@@ -22,10 +22,7 @@ public class BalanceTree {
         //计算右子数的深度
         int r = getDepth(node.right);
         //左右子树深度大于1
-        if (Math.abs(l-r) > 1){
-            return false;
-        }
-        return true;
+        return Math.abs(l - r) <= 1;
     }
 
     /**
@@ -39,7 +36,13 @@ public class BalanceTree {
             return 0;
         int l = getDepth(node.left) + 1;
         int r = getDepth(node.right) + 1;
-        return r>l?r:l;
+        return Math.max(r, l);
+    }
+
+    public static void main(String[] args) {
+        TreeNode treeNode = new TreeNode(args.length);
+        BalanceTree balanceTree = new BalanceTree();
+        balanceTree.isBalanceTree(treeNode);
     }
 
 }
